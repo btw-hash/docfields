@@ -1,0 +1,177 @@
+{
+  "mode": "rules",
+  "ranAt": "2026-11-15T01:53:03.177Z",
+  "metrics": {
+    "samples": 8,
+    "fieldAccuracy": 1,
+    "perField": {
+      "vendor": 1,
+      "invoiceNumber": 1,
+      "invoiceDate": 1,
+      "dueDate": 1,
+      "currency": 1,
+      "subtotal": 1,
+      "tax": 1,
+      "total": 1
+    },
+    "lineItemAccuracy": 1,
+    "lineItemsExpected": 24,
+    "lineItemsMatched": 24,
+    "lineItemsExtra": 0,
+    "flawedDocuments": 2,
+    "flawedFlagged": 2,
+    "cleanDocuments": 6,
+    "cleanFalselyFlagged": 0
+  },
+  "misses": [],
+  "rows": [
+    {
+      "file": "alderwick-timber-0412.pdf",
+      "layout": "A",
+      "fieldOk": {
+        "vendor": true,
+        "invoiceNumber": true,
+        "invoiceDate": true,
+        "dueDate": true,
+        "currency": true,
+        "subtotal": true,
+        "tax": true,
+        "total": true
+      },
+      "valid": true,
+      "issues": [],
+      "expectedFlag": null,
+      "flagged": null
+    },
+    {
+      "file": "marrow-finch-1087.pdf",
+      "layout": "B",
+      "fieldOk": {
+        "vendor": true,
+        "invoiceNumber": true,
+        "invoiceDate": true,
+        "dueDate": true,
+        "currency": true,
+        "subtotal": true,
+        "tax": true,
+        "total": true
+      },
+      "valid": true,
+      "issues": [],
+      "expectedFlag": null,
+      "flagged": null
+    },
+    {
+      "file": "northquay-cold-storage-117.pdf",
+      "layout": "C",
+      "fieldOk": {
+        "vendor": true,
+        "invoiceNumber": true,
+        "invoiceDate": true,
+        "dueDate": true,
+        "currency": true,
+        "subtotal": true,
+        "tax": true,
+        "total": true
+      },
+      "valid": true,
+      "issues": [],
+      "expectedFlag": null,
+      "flagged": null
+    },
+    {
+      "file": "tallow-creek-print-20931.pdf",
+      "layout": "A",
+      "fieldOk": {
+        "vendor": true,
+        "invoiceNumber": true,
+        "invoiceDate": true,
+        "dueDate": true,
+        "currency": true,
+        "subtotal": true,
+        "tax": true,
+        "total": true
+      },
+      "valid": true,
+      "issues": [],
+      "expectedFlag": null,
+      "flagged": null
+    },
+    {
+      "file": "piperfield-analytics-0079.pdf",
+      "layout": "B",
+      "fieldOk": {
+        "vendor": true,
+        "invoiceNumber": true,
+        "invoiceDate": true,
+        "dueDate": true,
+        "currency": true,
+        "subtotal": true,
+        "tax": true,
+        "total": true
+      },
+      "valid": true,
+      "issues": [],
+      "expectedFlag": null,
+      "flagged": null
+    },
+    {
+      "file": "quillon-bay-marine-3318.pdf",
+      "layout": "C",
+      "fieldOk": {
+        "vendor": true,
+        "invoiceNumber": true,
+        "invoiceDate": true,
+        "dueDate": true,
+        "currency": true,
+        "subtotal": true,
+        "tax": true,
+        "total": true
+      },
+      "valid": true,
+      "issues": [],
+      "expectedFlag": null,
+      "flagged": null
+    },
+    {
+      "file": "hartsmere-bueromoebel-0233.pdf",
+      "layout": "A",
+      "fieldOk": {
+        "vendor": true,
+        "invoiceNumber": true,
+        "invoiceDate": true,
+        "dueDate": true,
+        "currency": true,
+        "subtotal": true,
+        "tax": true,
+        "total": true
+      },
+      "valid": false,
+      "issues": [
+        "subtotal: Line items add up to 4529.40, but the subtotal is 4736.40."
+      ],
+      "expectedFlag": "subtotal",
+      "flagged": true
+    },
+    {
+      "file": "dunmore-ridge-catering.pdf",
+      "layout": "B",
+      "fieldOk": {
+        "vendor": true,
+        "invoiceNumber": true,
+        "invoiceDate": true,
+        "dueDate": true,
+        "currency": true,
+        "subtotal": true,
+        "tax": true,
+        "total": true
+      },
+      "valid": false,
+      "issues": [
+        "invoiceNumber: Not found in the document."
+      ],
+      "expectedFlag": "invoiceNumber",
+      "flagged": true
+    }
+  ]
+}

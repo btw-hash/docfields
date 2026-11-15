@@ -1,0 +1,435 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Docfields</title>
+    <style>
+      :root {
+        --bg: #f3f1ec;
+        --panel: #fffdf8;
+        --ink: #1d232b;
+        --muted: #636c78;
+        --line: #d9d4c8;
+        --accent: #1f4e79;
+        --mark: #ffe38a;
+        --ok: #1f7a4d;
+        --bad: #a33a3a;
+        --warn: #8a5f00;
+        --mono: ui-monospace, "Cascadia Mono", Consolas, monospace;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #14181d;
+          --panel: #1c2229;
+          --ink: #e6eaef;
+          --muted: #98a3b0;
+          --line: #2f3944;
+          --accent: #7fb6e6;
+          --mark: #6b5a13;
+          --ok: #62c592;
+          --bad: #e58a8a;
+          --warn: #e6b84d;
+          color-scheme: dark;
+        }
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font: 16px/1.55 Georgia, "Times New Roman", serif;
+      }
+      main { max-width: 1120px; margin: 0 auto; padding: 32px 20px 64px; display: grid; gap: 24px; }
+      header h1 { margin: 0; font-size: 30px; letter-spacing: -0.01em; }
+      header p { margin: 6px 0 0; color: var(--muted); max-width: 66ch; }
+      .mode { font: 12px var(--mono); color: var(--muted); }
+      button {
+        font: 600 14px system-ui, sans-serif; padding: 10px 16px; border-radius: 4px;
+        border: 1px solid var(--accent); background: var(--accent); color: var(--panel); cursor: pointer;
+      }
+      button:disabled { opacity: 0.5; cursor: default; }
+      button.chip {
+        background: transparent; color: var(--accent); border-color: var(--line);
+        font-weight: 500; padding: 6px 10px; font-size: 13px;
+      }
+      button.ghost { background: transparent; color: var(--accent); }
+      button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+      .chips { display: flex; gap: 6px; flex-wrap: wrap; }
+      textarea, input[type="text"] {
+        width: 100%; padding: 8px 10px; font: 14px var(--mono);
+        border: 1px solid var(--line); border-radius: 4px; background: var(--panel); color: var(--ink);
+      }
+      textarea { min-height: 120px; resize: vertical; }
+      .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-top: 10px; }
+      .row input[type="file"] { font: 13px system-ui, sans-serif; color: var(--muted); max-width: 100%; }
+      .cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; align-items: start; }
+      @media (max-width: 860px) { .cols { grid-template-columns: minmax(0, 1fr); } }
+      h2 { font: 600 12px system-ui, sans-serif; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin: 0 0 10px; }
+      .card { background: var(--panel); border: 1px solid var(--line); border-radius: 4px; padding: 18px; }
+      pre.doc {
+        margin: 0; font: 13px/1.5 var(--mono); white-space: pre-wrap; overflow-wrap: anywhere;
+        max-height: 640px; overflow: auto;
+      }
+      mark { background: var(--mark); color: inherit; padding: 0 1px; outline: 2px solid var(--accent); }
+      .banner { font: 600 14px system-ui, sans-serif; margin: 0 0 14px; }
+      .banner.ok { color: var(--ok); }
+      .banner.bad { color: var(--bad); }
+      .field { border-top: 1px solid var(--line); padding: 8px 0; }
+      .field:first-of-type { border-top: 0; padding-top: 0; }
+      .field label { display: flex; justify-content: space-between; align-items: center; font: 600 12px system-ui, sans-serif; color: var(--muted); margin-bottom: 4px; }
+      .status { font: 600 11px var(--mono); padding: 1px 6px; border-radius: 3px; border: 1px solid currentColor; }
+      .status.ok { color: var(--ok); }
+      .status.missing { color: var(--warn); }
+      .status.inconsistent { color: var(--bad); }
+      .reason { font: 12px system-ui, sans-serif; color: var(--muted); margin: 4px 0 0; min-height: 0; }
+      .reason:empty { display: none; }
+      .field.missing input, .item.missing input { border-color: var(--warn); }
+      .field.inconsistent input, .item.inconsistent input { border-color: var(--bad); }
+      .items { display: grid; gap: 10px; margin-top: 16px; }
+      .item { border-top: 1px solid var(--line); padding-top: 10px; }
+      .item .grid { display: grid; grid-template-columns: minmax(0, 3fr) repeat(3, minmax(0, 1fr)); gap: 6px; }
+      @media (max-width: 560px) { .item .grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
+      .item .head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; font: 600 12px system-ui, sans-serif; color: var(--muted); }
+      .tiny { font: 11px system-ui, sans-serif; color: var(--muted); display: block; margin-bottom: 2px; }
+      pre.json { margin: 12px 0 0; font: 12.5px/1.45 var(--mono); white-space: pre-wrap; overflow-wrap: anywhere; max-height: 360px; overflow: auto; border: 1px solid var(--line); border-radius: 4px; padding: 10px; background: var(--bg); }
+      .empty { color: var(--muted); margin: 0; }
+      .err { color: var(--bad); margin: 8px 0 0; font: 14px system-ui, sans-serif; }
+      .meta { font: 12px var(--mono); color: var(--muted); margin-top: 12px; }
+      table { border-collapse: collapse; width: 100%; font: 14px system-ui, sans-serif; }
+      td { padding: 6px 0; border-top: 1px solid var(--line); }
+      td:last-child { text-align: right; font-family: var(--mono); }
+      .miss { font: 13px system-ui, sans-serif; color: var(--muted); margin: 10px 0 0; }
+      [hidden] { display: none !important; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>Docfields</h1>
+        <p>
+          Upload an invoice PDF or paste its text. The fields are extracted, then checked in code: dates must be real,
+          line items must multiply out, and the totals must add up. Anything that does not is marked for you to review.
+        </p>
+        <p class="mode" id="mode">checking service…</p>
+      </header>
+
+      <section>
+        <h2>Document</h2>
+        <div class="chips" id="samples"></div>
+        <div style="margin-top: 10px">
+          <textarea id="paste" aria-label="Invoice text" placeholder="Paste invoice text here, or pick a sample above, or upload a PDF below."></textarea>
+        </div>
+        <div class="row">
+          <button type="button" id="extract">Extract</button>
+          <input type="file" id="file" accept="application/pdf,.pdf" aria-label="Invoice PDF, up to 2 MB" />
+        </div>
+        <p class="err" id="error" hidden></p>
+      </section>
+
+      <section id="result" hidden>
+        <div class="cols">
+          <div>
+            <h2>Document text</h2>
+            <div class="card"><pre class="doc" id="doc"></pre></div>
+            <p class="meta" id="docmeta"></p>
+          </div>
+          <div>
+            <h2>Fields</h2>
+            <div class="card">
+              <p class="banner" id="banner"></p>
+              <div id="fields"></div>
+              <div class="items" id="items"></div>
+              <div class="row" style="margin-top: 16px">
+                <button type="button" id="export">Export JSON</button>
+              </div>
+              <div id="exportbox" hidden>
+                <pre class="json" id="json" tabindex="0"></pre>
+                <div class="row">
+                  <button type="button" class="ghost" id="copy">Copy</button>
+                  <span class="meta" id="copied" style="margin: 0"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Last eval run</h2>
+        <div class="card" id="eval"><p class="empty">Loading…</p></div>
+      </section>
+    </main>
+
+    <script>
+      const FIELDS = [
+        ["vendor", "Vendor"],
+        ["invoiceNumber", "Invoice number"],
+        ["invoiceDate", "Invoice date (YYYY-MM-DD)"],
+        ["dueDate", "Due date (YYYY-MM-DD)"],
+        ["currency", "Currency (ISO code)"],
+        ["subtotal", "Subtotal"],
+        ["tax", "Tax"],
+        ["total", "Total"],
+      ];
+      const NUMERIC = new Set(["subtotal", "tax", "total"]);
+      const ITEM_COLS = [
+        ["description", "Description"],
+        ["quantity", "Qty"],
+        ["unitPrice", "Unit price"],
+        ["amount", "Amount"],
+      ];
+      const $ = (id) => document.getElementById(id);
+      const state = { text: "", fields: {}, items: [], validation: null };
+      let timer = 0;
+      let focusedSnippet = null;
+
+      function el(tag, props, ...kids) {
+        const node = document.createElement(tag);
+        Object.entries(props || {}).forEach(([k, v]) => {
+          if (k === "class") node.className = v;
+          else if (k === "text") node.textContent = v;
+          else node.setAttribute(k, v);
+        });
+        kids.forEach((k) => node.append(k));
+        return node;
+      }
+
+      function findSnippet(text, snippet) {
+        if (!snippet) return null;
+        const exact = text.indexOf(snippet);
+        if (exact >= 0) return [exact, exact + snippet.length];
+        const words = snippet.trim().split(/\s+/).map((w) => w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+        const m = new RegExp(words.join("\\s+"), "i").exec(text);
+        return m ? [m.index, m.index + m[0].length] : null;
+      }
+
+      function showDoc(snippet, focused) {
+        focusedSnippet = snippet || null;
+        const doc = $("doc");
+        const range = findSnippet(state.text, snippet);
+        doc.textContent = "";
+        if (!range) {
+          doc.append(state.text);
+          $("docmeta").textContent = focused ? "No source snippet for this value." : "";
+          return;
+        }
+        const mark = el("mark", { text: state.text.slice(range[0], range[1]) });
+        doc.append(state.text.slice(0, range[0]), mark, state.text.slice(range[1]));
+        $("docmeta").textContent = "";
+        mark.scrollIntoView({ block: "nearest" });
+      }
+
+      function parseInput(name, raw) {
+        const s = raw.trim();
+        if (s === "") return null;
+        if (NUMERIC.has(name) || ["quantity", "unitPrice", "amount"].includes(name)) {
+          return /^-?\d+(\.\d+)?$/.test(s) ? Number(s) : s;
+        }
+        return s;
+      }
+
+      function payload() {
+        const fields = {};
+        FIELDS.forEach(([n]) => { fields[n] = { value: state.fields[n].value, source: state.fields[n].source || null }; });
+        return { fields, lineItems: state.items.map((i) => ({ ...i })) };
+      }
+
+      function setChip(box, status, reason) {
+        box.classList.remove("ok", "missing", "inconsistent");
+        box.classList.add(status);
+        box.querySelector(".status").className = "status " + status;
+        box.querySelector(".status").textContent = status;
+        box.querySelector(".reason").textContent = status === "ok" ? "" : reason || "";
+      }
+
+      function apply(v) {
+        state.validation = v;
+        FIELDS.forEach(([n]) => setChip($("f-" + n), v.fields[n].status, v.fields[n].reason));
+        v.lineItems.forEach((it, i) => { const box = $("i-" + i); if (box) setChip(box, it.status, it.reason); });
+        const b = $("banner");
+        b.className = "banner " + (v.valid ? "ok" : "bad");
+        b.textContent = v.valid ? "All checks pass." : v.issues.length + " issue" + (v.issues.length === 1 ? "" : "s") + " to review.";
+        if (!$("exportbox").hidden) renderJson();
+      }
+
+      function revalidate() {
+        clearTimeout(timer);
+        timer = setTimeout(async () => {
+          try {
+            const res = await fetch("/api/validate", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(payload()) });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error || "Validation failed");
+            apply(data);
+          } catch (err) {
+            $("banner").className = "banner bad";
+            $("banner").textContent = err.message;
+          }
+        }, 200);
+      }
+
+      function buildForm(v) {
+        state.fields = {};
+        $("fields").textContent = "";
+        FIELDS.forEach(([n, label]) => {
+          const f = v.fields[n];
+          state.fields[n] = { value: f.value, source: f.source || null };
+          const input = el("input", { type: "text", id: "in-" + n, autocomplete: "off", spellcheck: "false" });
+          input.value = f.value === null ? "" : String(f.value);
+          input.addEventListener("focus", () => showDoc(state.fields[n].source, true));
+          input.addEventListener("input", () => { state.fields[n].value = parseInput(n, input.value); revalidate(); });
+          $("fields").append(
+            el("div", { class: "field", id: "f-" + n },
+              el("label", { for: "in-" + n }, document.createTextNode(label), el("span", { class: "status", text: "" })),
+              input,
+              el("p", { class: "reason" }))
+          );
+        });
+        state.items = v.lineItems.map((i) => ({ description: i.description, quantity: i.quantity, unitPrice: i.unitPrice, amount: i.amount, source: i.source || null }));
+        $("items").textContent = "";
+        $("items").append(el("h2", { text: "Line items" }));
+        if (!state.items.length) $("items").append(el("p", { class: "empty", text: "No line items were found." }));
+        state.items.forEach((item, idx) => {
+          const grid = el("div", { class: "grid" });
+          ITEM_COLS.forEach(([k, label]) => {
+            const input = el("input", { type: "text", "aria-label": label + " of line " + (idx + 1), autocomplete: "off", spellcheck: "false" });
+            input.value = item[k] === null ? "" : String(item[k]);
+            input.addEventListener("focus", () => showDoc(item.source, true));
+            input.addEventListener("input", () => { item[k] = parseInput(k, input.value); revalidate(); });
+            grid.append(el("div", {}, el("span", { class: "tiny", text: label }), input));
+          });
+          $("items").append(
+            el("div", { class: "item", id: "i-" + idx },
+              el("div", { class: "head" }, document.createTextNode("Line " + (idx + 1)), el("span", { class: "status", text: "" })),
+              grid,
+              el("p", { class: "reason" }))
+          );
+        });
+      }
+
+      function finalJson() {
+        const v = state.validation;
+        const out = {};
+        FIELDS.forEach(([n]) => { out[n] = state.fields[n].value; });
+        out.lineItems = state.items.map(({ description, quantity, unitPrice, amount }) => ({ description, quantity, unitPrice, amount }));
+        out.validation = { valid: v.valid, issues: v.issues };
+        return JSON.stringify(out, null, 2);
+      }
+
+      function renderJson() { $("json").textContent = finalJson(); }
+
+      function selectJson() {
+        const range = document.createRange();
+        range.selectNodeContents($("json"));
+        const sel = getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+      }
+
+      async function copyJson() {
+        const text = $("json").textContent;
+        let ok = false;
+        try {
+          await navigator.clipboard.writeText(text);
+          ok = true;
+        } catch (e) {
+          selectJson();
+          try { ok = document.execCommand("copy"); } catch (e2) { ok = false; }
+        }
+        $("copied").textContent = ok ? "Copied." : "Select the text and copy it manually.";
+        if (!ok) selectJson();
+      }
+
+      function show(result) {
+        state.text = result.text;
+        $("result").hidden = false;
+        $("exportbox").hidden = true;
+        $("copied").textContent = "";
+        buildForm(result.validation);
+        apply(result.validation);
+        showDoc(null);
+        $("docmeta").textContent = "Mode: " + result.mode + " · " + result.ms + " ms. Focus a field to see where it was read from.";
+        $("result").scrollIntoView({ block: "start", behavior: "smooth" });
+      }
+
+      function fail(message) {
+        $("error").textContent = message;
+        $("error").hidden = !message;
+      }
+
+      async function run(request) {
+        fail("");
+        $("extract").disabled = true;
+        try {
+          const res = await fetch("/api/extract", request);
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.error || "Request failed");
+          show(data);
+        } catch (err) {
+          fail(err.message);
+        } finally {
+          $("extract").disabled = false;
+        }
+      }
+
+      $("extract").addEventListener("click", () => {
+        const file = $("file").files[0];
+        if (file) {
+          const form = new FormData();
+          form.append("file", file);
+          run({ method: "POST", body: form });
+          return;
+        }
+        run({ method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ text: $("paste").value }) });
+      });
+      $("file").addEventListener("change", () => { if ($("file").files[0]) $("paste").value = ""; });
+      $("export").addEventListener("click", () => {
+        const box = $("exportbox");
+        box.hidden = !box.hidden;
+        if (!box.hidden) renderJson();
+      });
+      $("copy").addEventListener("click", copyJson);
+
+      fetch("/api/health").then((r) => r.json()).then((d) => { $("mode").textContent = "extractor: " + d.mode; });
+
+      fetch("/api/samples")
+        .then((r) => r.json())
+        .then((list) => {
+          list.forEach((s) => {
+            const b = el("button", { type: "button", class: "chip", text: s.title });
+            b.addEventListener("click", async () => {
+              const res = await fetch("/api/samples/" + encodeURIComponent(s.id));
+              const data = await res.json();
+              if (!res.ok) return fail(data.error || "Could not load the sample");
+              $("file").value = "";
+              $("paste").value = data.text;
+              run({ method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ text: data.text }) });
+            });
+            $("samples").append(b);
+          });
+        });
+
+      fetch("/api/eval")
+        .then((r) => (r.ok ? r.json() : Promise.reject()))
+        .then((d) => {
+          const pct = (v) => (v * 100).toFixed(1) + "%";
+          const m = d.metrics;
+          const card = $("eval");
+          card.textContent = "";
+          const rows = [
+            ["Sample invoices", m.samples],
+            ["Field accuracy (exact match)", pct(m.fieldAccuracy)],
+            ["Line items extracted exactly", m.lineItemsMatched + " / " + m.lineItemsExpected],
+            ["Flawed documents flagged", m.flawedFlagged + " / " + m.flawedDocuments],
+            ["Clean documents flagged by mistake", m.cleanFalselyFlagged + " / " + m.cleanDocuments],
+          ];
+          const table = el("table");
+          rows.forEach(([a, b]) => table.append(el("tr", {}, el("td", { text: a }), el("td", { text: String(b) }))));
+          card.append(table);
+          if (d.misses.length) card.append(el("p", { class: "miss", text: "Misses: " + d.misses.join(" · ") }));
+          card.append(el("p", { class: "meta", text: d.mode + " · " + d.ranAt.slice(0, 10) + " · the samples are in-house, so this is a smoke test, not a benchmark" }));
+        })
+        .catch(() => { $("eval").textContent = ""; $("eval").append(el("p", { class: "empty", text: "No eval report yet." })); });
+    </script>
+  </body>
+</html>

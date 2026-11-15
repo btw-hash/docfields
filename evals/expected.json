@@ -1,0 +1,282 @@
+[
+  {
+    "file": "alderwick-timber-0412.pdf",
+    "layout": "A",
+    "fields": {
+      "vendor": "Alderwick Timber Supplies GmbH",
+      "invoiceNumber": "RE-2026-0412",
+      "invoiceDate": "2026-03-04",
+      "dueDate": "2026-04-03",
+      "currency": "EUR",
+      "subtotal": 5599,
+      "tax": 1063.81,
+      "total": 6662.81
+    },
+    "lineItems": [
+      {
+        "description": "Oak boards 40 mm, kiln dried (per m3)",
+        "quantity": 2.5,
+        "unitPrice": 1180,
+        "amount": 2950
+      },
+      {
+        "description": "Larch cladding 21 x 146 mm (per m2)",
+        "quantity": 64,
+        "unitPrice": 38.5,
+        "amount": 2464
+      },
+      {
+        "description": "Delivery to customer site",
+        "quantity": 1,
+        "unitPrice": 185,
+        "amount": 185
+      }
+    ],
+    "expectedFlag": null
+  },
+  {
+    "file": "marrow-finch-1087.pdf",
+    "layout": "B",
+    "fields": {
+      "vendor": "Marrow & Finch Studio LLC",
+      "invoiceNumber": "MF-1087",
+      "invoiceDate": "2026-03-11",
+      "dueDate": "2026-04-10",
+      "currency": "USD",
+      "subtotal": 4820,
+      "tax": 397.65,
+      "total": 5217.65
+    },
+    "lineItems": [
+      {
+        "description": "Discovery workshop (hours)",
+        "quantity": 6,
+        "unitPrice": 145,
+        "amount": 870
+      },
+      {
+        "description": "Logo and wordmark design",
+        "quantity": 1,
+        "unitPrice": 2400,
+        "amount": 2400
+      },
+      {
+        "description": "Packaging dielines (per sheet)",
+        "quantity": 5,
+        "unitPrice": 310,
+        "amount": 1550
+      }
+    ],
+    "expectedFlag": null
+  },
+  {
+    "file": "northquay-cold-storage-117.pdf",
+    "layout": "C",
+    "fields": {
+      "vendor": "Northquay Cold Storage B.V.",
+      "invoiceNumber": "2026/117",
+      "invoiceDate": "2026-03-02",
+      "dueDate": "2026-04-01",
+      "currency": "EUR",
+      "subtotal": 369.8,
+      "tax": 77.66,
+      "total": 447.46
+    },
+    "lineItems": [
+      {
+        "description": "Pallet space, chilled 2-6 C, week 9",
+        "quantity": 12,
+        "unitPrice": 14.8,
+        "amount": 177.6
+      },
+      {
+        "description": "Goods in, per pallet",
+        "quantity": 12,
+        "unitPrice": 6.25,
+        "amount": 75
+      },
+      {
+        "description": "Pick and pack, per order line",
+        "quantity": 38,
+        "unitPrice": 1.9,
+        "amount": 72.2
+      },
+      {
+        "description": "Temperature log export",
+        "quantity": 1,
+        "unitPrice": 45,
+        "amount": 45
+      }
+    ],
+    "expectedFlag": null
+  },
+  {
+    "file": "tallow-creek-print-20931.pdf",
+    "layout": "A",
+    "fields": {
+      "vendor": "Tallow Creek Print Works",
+      "invoiceNumber": "TC-20931",
+      "invoiceDate": "2026-03-18",
+      "dueDate": "2026-04-17",
+      "currency": "USD",
+      "subtotal": 993.5,
+      "tax": 59.61,
+      "total": 1053.11
+    },
+    "lineItems": [
+      {
+        "description": "Bottle labels, 90 x 120 mm, matte (box of 500)",
+        "quantity": 8,
+        "unitPrice": 74.5,
+        "amount": 596
+      },
+      {
+        "description": "Countertop display cards",
+        "quantity": 150,
+        "unitPrice": 1.85,
+        "amount": 277.5
+      },
+      {
+        "description": "Die cutting setup",
+        "quantity": 1,
+        "unitPrice": 120,
+        "amount": 120
+      }
+    ],
+    "expectedFlag": null
+  },
+  {
+    "file": "piperfield-analytics-0079.pdf",
+    "layout": "B",
+    "fields": {
+      "vendor": "Piperfield Analytics Ltd",
+      "invoiceNumber": "PA-0079",
+      "invoiceDate": "2026-03-18",
+      "dueDate": "2026-04-17",
+      "currency": "EUR",
+      "subtotal": 7480,
+      "tax": 1720.4,
+      "total": 9200.4
+    },
+    "lineItems": [
+      {
+        "description": "Data pipeline audit (days)",
+        "quantity": 4,
+        "unitPrice": 950,
+        "amount": 3800
+      },
+      {
+        "description": "Dashboard build, sales and stock",
+        "quantity": 1,
+        "unitPrice": 3200,
+        "amount": 3200
+      },
+      {
+        "description": "Analyst training session (hours)",
+        "quantity": 3,
+        "unitPrice": 160,
+        "amount": 480
+      }
+    ],
+    "expectedFlag": null
+  },
+  {
+    "file": "quillon-bay-marine-3318.pdf",
+    "layout": "C",
+    "fields": {
+      "vendor": "Quillon Bay Marine Services",
+      "invoiceNumber": "QB-3318",
+      "invoiceDate": "2026-03-09",
+      "dueDate": "2026-03-23",
+      "currency": "USD",
+      "subtotal": 1089,
+      "tax": 65.34,
+      "total": 1154.34
+    },
+    "lineItems": [
+      {
+        "description": "Hull inspection, in water",
+        "quantity": 3,
+        "unitPrice": 185,
+        "amount": 555
+      },
+      {
+        "description": "Zinc anode replacement",
+        "quantity": 8,
+        "unitPrice": 42.75,
+        "amount": 342
+      },
+      {
+        "description": "Bilge pump service",
+        "quantity": 2,
+        "unitPrice": 96,
+        "amount": 192
+      }
+    ],
+    "expectedFlag": null
+  },
+  {
+    "file": "hartsmere-bueromoebel-0233.pdf",
+    "layout": "A",
+    "fields": {
+      "vendor": "Hartsmere Büromöbel GmbH",
+      "invoiceNumber": "HB-2026-0233",
+      "invoiceDate": "2026-03-12",
+      "dueDate": "2026-04-11",
+      "currency": "EUR",
+      "subtotal": 4736.4,
+      "tax": 899.92,
+      "total": 5636.32
+    },
+    "lineItems": [
+      {
+        "description": "Height-adjustable desk 160 x 80 cm",
+        "quantity": 6,
+        "unitPrice": 489,
+        "amount": 2934
+      },
+      {
+        "description": "Task chair, mesh back",
+        "quantity": 6,
+        "unitPrice": 265.9,
+        "amount": 1595.4
+      }
+    ],
+    "expectedFlag": "subtotal"
+  },
+  {
+    "file": "dunmore-ridge-catering.pdf",
+    "layout": "B",
+    "fields": {
+      "vendor": "Dunmore Ridge Catering Co.",
+      "invoiceNumber": null,
+      "invoiceDate": "2026-03-20",
+      "dueDate": "2026-04-19",
+      "currency": "USD",
+      "subtotal": 774,
+      "tax": 51.28,
+      "total": 825.28
+    },
+    "lineItems": [
+      {
+        "description": "Working lunch, per head",
+        "quantity": 24,
+        "unitPrice": 18.5,
+        "amount": 444
+      },
+      {
+        "description": "Coffee and pastry service",
+        "quantity": 2,
+        "unitPrice": 135,
+        "amount": 270
+      },
+      {
+        "description": "Delivery and setup",
+        "quantity": 1,
+        "unitPrice": 60,
+        "amount": 60
+      }
+    ],
+    "expectedFlag": "invoiceNumber"
+  }
+]

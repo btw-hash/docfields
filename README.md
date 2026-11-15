@@ -2,6 +2,10 @@
 
 Invoice field extraction where the extracted numbers are checked by code before a person sees them, and a review screen shows every value next to the text it was read from.
 
+**Live demo:** [docfields.btwstudio.dev](https://docfields.btwstudio.dev)
+
+![Docfields walkthrough: a flagged subtotal, the source line highlighted, the fix re-validated live and the exported JSON](docs/demo.gif)
+
 Upload an invoice PDF or paste its text. Docfields returns the vendor, invoice number, dates, currency, subtotal, tax, total and line items, each with a status (`ok`, `missing` or `inconsistent`), a reason in plain words, and the source snippet when one is available.
 
 ## Why validation is in code
@@ -126,7 +130,7 @@ docker build -t docfields .
 docker run -p 3470:3470 docfields
 ```
 
-The image has not been built in this repository's checks; the build and the start of `node dist/server.js` were run locally without Docker.
+The image was built and smoke-tested locally: `/api/health` and a PDF upload to `/api/extract` both respond from the container.
 
 ## License
 

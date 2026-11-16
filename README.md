@@ -4,7 +4,7 @@ Invoice field extraction where the extracted numbers are checked by code before 
 
 **Live demo:** [docfields.btwstudio.dev](https://docfields.btwstudio.dev)
 
-![Docfields walkthrough: a flagged subtotal, the source line highlighted, the fix re-validated live and the exported JSON](docs/demo.gif)
+![Docfields walkthrough: a flagged subtotal, the source line highlighted, the fix re-validated live and a second invoice in another layout](docs/demo.gif)
 
 Upload an invoice PDF or paste its text. Docfields returns the vendor, invoice number, dates, currency, subtotal, tax, total and line items, each with a status (`ok`, `missing` or `inconsistent`), a reason in plain words, and the source snippet when one is available.
 

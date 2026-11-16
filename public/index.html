@@ -449,6 +449,79 @@ td:last-child {
   color: var(--muted);
   margin: 10px 0 0;
 }
+/* Motion: fields arrive in order, a status that changes pops, the verdict flips,
+   the source line is drawn like a marker stroke. Off under reduced motion. */
+button,
+input[type="text"],
+.status,
+.banner {
+  transition:
+    background-color 0.25s ease,
+    border-color 0.25s ease,
+    color 0.25s ease,
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+button:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: none;
+}
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+@keyframes pop {
+  40% {
+    transform: scale(1.25);
+  }
+}
+@keyframes flip {
+  from {
+    opacity: 0.2;
+    transform: translateY(-6px);
+  }
+}
+@keyframes sweep {
+  from {
+    background-size: 0% 100%;
+    box-shadow: 0 0 0 2px transparent;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  header > *,
+  main > section,
+  main > div {
+    animation: rise 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+  .field,
+  .item {
+    animation: rise 0.4s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    animation-delay: calc(var(--i, 0) * 45ms);
+  }
+  .status.pop {
+    animation: pop 0.45s ease;
+  }
+  .banner.flip {
+    animation: flip 0.45s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  mark {
+    background-image: linear-gradient(var(--mark), var(--mark));
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    animation: sweep 0.55s cubic-bezier(0.3, 0.6, 0.2, 1) both;
+  }
+  pre.json {
+    animation: rise 0.4s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+}
+
 [hidden] {
   display: none !important;
 }
@@ -590,8 +663,14 @@ td:last-child {
       function setChip(box, status, reason) {
         box.classList.remove("ok", "missing", "inconsistent");
         box.classList.add(status);
-        box.querySelector(".status").className = "status " + status;
-        box.querySelector(".status").textContent = status;
+        const chip = box.querySelector(".status");
+        const changed = chip.textContent !== "" && chip.textContent !== status;
+        chip.className = "status " + status;
+        chip.textContent = status;
+        if (changed) {
+          void chip.offsetWidth;
+          chip.classList.add("pop");
+        }
         box.querySelector(".reason").textContent = status === "ok" ? "" : reason || "";
       }
 
@@ -600,8 +679,14 @@ td:last-child {
         FIELDS.forEach(([n]) => setChip($("f-" + n), v.fields[n].status, v.fields[n].reason));
         v.lineItems.forEach((it, i) => { const box = $("i-" + i); if (box) setChip(box, it.status, it.reason); });
         const b = $("banner");
+        const verdict = v.valid ? "All checks pass." : v.issues.length + " issue" + (v.issues.length === 1 ? "" : "s") + " to review.";
+        const flipped = b.textContent !== "" && b.textContent !== verdict;
         b.className = "banner " + (v.valid ? "ok" : "bad");
-        b.textContent = v.valid ? "All checks pass." : v.issues.length + " issue" + (v.issues.length === 1 ? "" : "s") + " to review.";
+        b.textContent = verdict;
+        if (flipped) {
+          void b.offsetWidth;
+          b.classList.add("flip");
+        }
         if (!$("exportbox").hidden) renderJson();
       }
 
@@ -697,7 +782,9 @@ td:last-child {
         $("result").hidden = false;
         $("exportbox").hidden = true;
         $("copied").textContent = "";
+        $("banner").textContent = "";
         buildForm(result.validation);
+        document.querySelectorAll("#fields .field, #items .item").forEach((row, i) => row.style.setProperty("--i", i));
         apply(result.validation);
         showDoc(null);
         $("docmeta").textContent = "Mode: " + result.mode + " · " + result.ms + " ms. Focus a field to see where it was read from.";
